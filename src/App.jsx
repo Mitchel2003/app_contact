@@ -14,10 +14,10 @@ export default function App(){
       <Navbar />
       <main>
         <Routes>
-          <Route index> <Index /> </Route>
-          <Route path="/agregarContacto"> <AgregarContacto /> </Route>
-          <Route path="/contacto/:id"> <DetalleContacto /> </Route>
-          <Route path="/contacto/:id/editar"> <EditarContacto /> </Route>
+          <Route index element={ <Index /> } />
+          <Route path="/agregarContacto" element={<AgregarContacto />} />
+          <Route path="/contacto/:id" element={<DetalleContacto />} />
+          <Route path="/contacto/:id/editar" element={<EditarContacto />} />
         </Routes>
       </main>
     </BrowserRouter>
