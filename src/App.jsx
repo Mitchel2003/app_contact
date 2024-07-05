@@ -1,12 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 /*--------------------components--------------------*/
 import Navbar from './components/Navbar';
-import Index from './components/Index';
-import Card from './components/Card';
 
-import AgregarContacto from './components/AgregarContacto';
-import DetalleContacto from './components/DetalleContacto';
-import EditarContacto from './components/EditarContacto';
+import Index from './components/pages/Index';
+import AgregarContacto from './components/pages/AgregarContacto';
+import DetalleContacto from './components/pages/DetalleContacto';
+import EditarContacto from './components/pages/EditarContacto';
 
 export default function App(){
   return (
