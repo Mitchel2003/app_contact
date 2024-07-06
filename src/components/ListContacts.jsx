@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Contact from './Contact';
 
-function ListContacts ({ contacts }) {
+export default ({ contacts }) => {
     return (
         <section className="contacts">
             { contacts.map(e => (
@@ -12,4 +12,3 @@ function ListContacts ({ contacts }) {
         </section>
     )
 }
-export default ListContacts;
