@@ -1,0 +1,8 @@
+.contact{
+    gap: 10px;
+    padding: 20px;
+    display: flex;
+    border-radius: 24px;
+    flex-direction: column;
+    background: linear-gradient(70deg, rgb(148, 148, 249), rgb(249, 166, 180), rgb(148, 148, 249)); 
+}
