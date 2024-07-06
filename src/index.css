@@ -1,10 +1,18 @@
 *{
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-  text-decoration: none;
-  color: black;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    color: black;
 }
 .button{
-  
+    padding: 15px;
+    border: none;
+    border-radius: 24px;
+    font-weight: 600;
 }
+.primary{ background-color: #0f9; color: white }
+.danger{ background-color: rgb(254, 104, 104); color: white }
+.warning{ background-color: rgb(221, 221, 124) }
+.center{ display: grid; place-content: center }
+.main{ padding: 24px }
