@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ListContacts from '../ListContacts';
-import '../../styles/Index.css';
+import '../styles/Index.css';
 
 export default () => {
     const [contacts, setContacts] = useState([]);
