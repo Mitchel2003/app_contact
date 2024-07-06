@@ -4,11 +4,11 @@ import Contact from './Contact';
 export default ({ contacts }) => {
     return (
         <section className="contacts">
-          { contacts.map(e => (
-              <Link to={`/contact/${e.id}`}>
-                <Contact key={e.id} {...e} />
-              </Link>
-            )) }
+            { contacts.map(e => (
+                <Link to={`/contact/${e.id}`}>
+                    <Contact key={e.id} {...e} />
+                </Link>
+              )) }
         </section>
-    )    
+    )
 }
