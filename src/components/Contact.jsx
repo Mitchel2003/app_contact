@@ -1,4 +1,4 @@
-import '../styles/Contact.css';
+import './styles/Contact.css';
 export default ({ name, phone }) => {
     return (
         <article className="contact">
