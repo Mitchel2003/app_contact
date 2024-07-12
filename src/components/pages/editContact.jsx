@@ -5,7 +5,6 @@ export default () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [ contact, setContact ] = useState({ name: "", phone: ""});
-
     useEffect(() => { loadContact() }, []);
 
     const loadContact = async () => {
@@ -34,6 +33,25 @@ export default () => {
     };
 
     return (
-        
+        <>
+            <h2> Editar contacto </h2>
+            <div className="center">
+                <form className="form" onSubmit={onSubmit}>
+                    <label>
+                        <p> Name </p>
+                        <input type="text" name="name" onChange={onChangeInput} value={contact.name} />
+                    </label>
+
+                    <label>
+                        <p> Phone </p>
+                        <input type="text" name="phone" onChange={onChangeInput} value={contact.phone} />
+                    </label>
+
+                    <div className="center">
+                        <button className="button primary"> Editar contact </button>
+                    </div>
+                </form>
+            </div>
+        </>
     );
 };
