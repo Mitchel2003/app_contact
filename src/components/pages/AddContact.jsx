@@ -13,7 +13,7 @@ export default () => {
         postContact(contact);
     }
     const postContact = async (contact) => {
-        await fetch(...Api, {
+        await fetch(API_URL, {
             method: "POST",
             body: JSON.stringify(contact)
         });
