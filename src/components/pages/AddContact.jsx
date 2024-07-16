@@ -1,3 +1,4 @@
+import { API_ENDPOINT } from '../database/server.js';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import '../styles/AddContact.css';
@@ -13,7 +14,7 @@ export default () => {
         postContact(contact);
     }
     const postContact = async (contact) => {
-        await fetch(API_URL, {
+        await fetch(API_ENDPOINT, {
             method: "POST",
             body: JSON.stringify(contact)
         });

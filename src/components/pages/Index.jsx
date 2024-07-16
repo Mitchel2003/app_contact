@@ -1,3 +1,4 @@
+import { API_ENDPOINT } from '../database/server.js';
 import { useState, useEffect } from 'react';
 import ListContacts from '../ListContacts';
 import '../styles/Index.css';
@@ -7,18 +8,18 @@ export default () => {
     useEffect(() => { loadContacts() }, []);
 
     const loadContacts = async () => {
-        const res = await fetch(...);
+        const res = await fetch(API_ENDPOINT);
         const json = await res.json();
         setContacts(json);
     }
 
     return (
-      <>
-        <h2> Contacts </h2>
-        { contacts.length > 0 ?
-            (<ListContacts contacts={contacts} />) :
-            (<div className={center}> <p>Nothing found</p> </div>)
-        }
-      </>
+        <>
+            <h2> Contacts </h2>
+            {contacts.length > 0 ?
+                (<ListContacts contacts={contacts} />) :
+                (<div className="center"> <p>Nothing found</p> </div>)
+            }
+        </>
     )
 }
