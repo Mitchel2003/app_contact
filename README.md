@@ -16,99 +16,47 @@ I ask me; because wehn we create a contactac with information like {name, phone}
 make a ID for each element (contact) created; on the code i dont look where insert a ID, i need investigate more about this...
 
 
-mira lo  que pasa es  que tengo este componente "import { API_ENDPOINT } from '../database/server.js'
+El comportamiento de que `console.log` se imprime dos veces es debido a cómo React maneja el `useEffect` en modo estricto (`StrictMode`). En el modo estricto, React monta y desmonta los componentes dos veces durante el desarrollo para detectar efectos secundarios no deseados y asegurarse de que el código sea seguro y limpio.
+
+Para abordar este problema, vamos a revisar y mejorar tu código, asegurando que sea limpio, eficiente y profesional.
+
+### Código Mejorado y Explicado
+
+1. **Asegúrate de esperar la resolución de la promesa**: Utiliza `await` para `res.json()` para obtener los datos del contacto.
+2. **Optimiza el `useEffect`**: Evita que el efecto se ejecute innecesariamente.
+3. **Manejo del estado y eventos de forma clara**: Sigue las mejores prácticas para mantener el código limpio y entendible.
+
+```jsx
+import { API_ENDPOINT } from '../database/server.js';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-export default () => {
+const EditContact = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [contact, setContact] = useState({ name: "", phone: "" });
-  useEffect(() => { loadContact() }, []);
-
-  const loadContact = async () => {
-    const res = await fetch(API_ENDPOINT + id);
-    if (!res.ok) return navigate("/");
-    const json = res.json();
-    setContact(json);
-  }
-  const onChangeInput = (e) => {
-    setContact({ ...contact, [e.target.name]: e.target.value })
-  }
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!contact.name || !contact.phone) return
-    editContact(contact);
-  }
-  const editContact = async (data) => {
-    const req = await fetch(API_ENDPOINT + id, {
-      method: "PUT",
-      body: JSON.stringify(data)
-    });
-    navigate("/");
-  }
-
-  return (
-    <>
-      <h2> Editar contacto </h2>
-      <div className="center">
-        <form className="form" onSubmit={onSubmit}>
-          <label>
-            <p> Name </p>
-            <input type="text" name="name" onChange={onChangeInput} value={contact.name} />
-          </label>
-
-          <label>
-            <p> Phone </p>
-            <input type="text" name="phone" onChange={onChangeInput} value={contact.phone} />
-          </label>
-
-          <div className="center">
-            <button className="button primary"> Editar contact </button>
-          </div>
-        </form>
-      </div>
-    </>
-  )
-}"
-se llama SetContact y esta funcional, la cuestion es al momento  de clickear sobre un contacto e ir a modificarlo u editarlo, entonces react me muestra este error "Warning: A component is changing a controlled input to be uncontrolled. This is likely caused by the value changing from a defined to undefined, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components" la cuestion es que como ves, deseo llenar los inputs con los valores traidos  desde  el backend; dime entonces como podria yo solucionar esta advertencia;  tampoco los inputs me muestran la informacion almacenada de ese usuario
-
-
-#/*----------------------------------------------------------------*/
-Para solucionar el problema de la advertencia "A component is changing a controlled input to be uncontrolled" en React, es esencial asegurarse de que los inputs controlados siempre tengan un valor definido, incluso antes de que los datos del backend se hayan cargado. Aquí tienes un enfoque paso a paso para abordar este problema:
-
-1. **Inicializa el estado de los inputs**: Asegúrate de que el estado de los inputs esté inicializado con valores predeterminados no `undefined`. Por ejemplo, utiliza cadenas vacías o valores adecuados según el tipo de input.
-
-2. **Utiliza un `useEffect` para actualizar el estado cuando los datos se hayan cargado**: Una vez que los datos del backend estén disponibles, actualiza el estado con esos valores.
-
-3. **Renderiza los inputs con el estado actualizado**: Asegúrate de que los inputs siempre tengan un valor asignado desde el estado.
-
-Aquí tienes un ejemplo práctico:
-
-```jsx
-import React, { useState, useEffect } from 'react';
-
-function EditContact({ contactId }) {
-  const [contact, setContact] = useState({
-    name: '',
-    email: '',
-    phone: ''
-  });
+  const [contact, setContact] = useState({ name: '', phone: '' });
 
   useEffect(() => {
-    // Simulación de una llamada al backend para obtener los datos del contacto
-    const fetchContact = async () => {
-      const response = await fetch(`/api/contacts/${contactId}`);
-      const data = await response.json();
-      setContact({
-        name: data.name || '',
-        email: data.email || '',
-        phone: data.phone || ''
-      });
+    const loadContact = async () => {
+      try {
+        const res = await fetch(`${API_ENDPOINT}${id}`);
+        if (!res.ok) {
+          navigate('/');
+          return;
+        }
+        const data = await res.json();
+        console.log(data); // Se imprimirá dos veces en modo estricto (desarrollo)
+        setContact({
+          name: data.name || '',
+          phone: data.phone || ''
+        });
+      } catch (error) {
+        console.error('Error loading contact:', error);
+      }
     };
 
-    fetchContact();
-  }, [contactId]);
+    loadContact();
+  }, [id, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -118,54 +66,81 @@ function EditContact({ contactId }) {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!contact.name || !contact.phone) return;
+
+    try {
+      const req = await fetch(`${API_ENDPOINT}${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(contact)
+      });
+      if (req.ok) navigate('/');
+    } catch (error) {
+      console.error('Error updating contact:', error);
+    }
+  };
+
   return (
-    <div>
-      <h2>Edit Contact</h2>
-      <form>
-        <label>
-          Name:
-          <input
-            type="text"
-            name="name"
-            value={contact.name}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={contact.email}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Phone:
-          <input
-            type="tel"
-            name="phone"
-            value={contact.phone}
-            onChange={handleChange}
-          />
-        </label>
-      </form>
-    </div>
+    <>
+      <h2>Editar contacto</h2>
+      <div className="center">
+        <form className="form" onSubmit={handleSubmit}>
+          <label>
+            <p>Nombre</p>
+            <input
+              type="text"
+              name="name"
+              onChange={handleChange}
+              value={contact.name}
+            />
+          </label>
+          <label>
+            <p>Teléfono</p>
+            <input
+              type="text"
+              name="phone"
+              onChange={handleChange}
+              value={contact.phone}
+            />
+          </label>
+          <div className="center">
+            <button className="button primary" type="submit">
+              Editar contacto
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
-}
+};
 
 export default EditContact;
 ```
 
-### Explicación:
-1. **Inicialización del Estado**: El estado `contact` se inicializa con cadenas vacías para cada campo. Esto asegura que los inputs siempre tendrán un valor definido.
-2. **Carga de Datos**: En el `useEffect`, se simula una llamada al backend para obtener los datos del contacto. Una vez que se obtienen los datos, se actualiza el estado `contact` con los valores recibidos.
-3. **Manejo de Cambios en los Inputs**: La función `handleChange` actualiza el estado `contact` a medida que el usuario modifica los inputs.
+### Explicación del Código
 
-### Consideraciones Adicionales:
-- Asegúrate de que los datos del backend siempre contengan los campos necesarios, o maneja los casos en que puedan estar ausentes (`null` o `undefined`).
-- Si estás usando TypeScript, puedes definir un tipo para `contact` que refleje la estructura esperada, lo que ayudará a evitar errores.
+1. **Uso de `useEffect` con Dependencias**:
+   - El efecto se ejecuta solo cuando cambia `id` o `navigate`. Esto asegura que el contacto se carga solo cuando es necesario.
+   - La función `loadContact` está definida dentro de `useEffect` para evitar efectos secundarios.
 
-Este enfoque garantiza que los inputs siempre sean controlados y tengan valores definidos, eliminando así la advertencia y asegurando que los datos se muestren correctamente.
+2. **Manejo de Promesas**:
+   - `await res.json()` se asegura de que estamos esperando la resolución de la promesa antes de usar los datos.
+   - Los datos se establecen en el estado `contact` una vez que se han cargado correctamente.
+
+3. **Manejo de Cambios en Inputs**:
+   - `handleChange` actualiza el estado de manera controlada, asegurando que cada cambio en los inputs se refleje en el estado del componente.
+
+4. **Envío del Formulario**:
+   - `handleSubmit` maneja el envío del formulario, validando los datos y realizando una solicitud `PUT` para actualizar el contacto en el backend.
+
+### Nota sobre el Modo Estricto
+
+En el modo estricto, React monta y desmonta componentes adicionales durante el desarrollo para detectar efectos secundarios, lo cual puede resultar en que los efectos se ejecuten más de una vez. Esto no ocurre en el entorno de producción.
+
+Para desactivar el modo estricto (solo durante el desarrollo), puedes comentar o eliminar `<React.StrictMode>` en tu archivo `index.js`. Sin embargo, no se recomienda desactivar el modo estricto, ya que ayuda a detectar problemas potenciales en el código.
+
+Implementar esta estructura optimizada no solo resolverá el problema de los inputs controlados, sino que también hará que tu código sea más limpio, eficiente y profesional, algo que impresionará al CEO y a otros stakeholders.

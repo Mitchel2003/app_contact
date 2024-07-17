@@ -11,8 +11,8 @@ export default () => {
   const loadContact = async () => {
     const res = await fetch(API_ENDPOINT + id);
     if (!res.ok) return navigate("/");
-    const json = res.json();
-    console.log(json.phone);
+    const json = await res.json();
+    setContact(json);
   }
   const onChangeInput = (e) => {
     setContact({ ...contact, [e.target.name]: e.target.value })
