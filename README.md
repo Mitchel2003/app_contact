@@ -4,6 +4,9 @@ App contact with React and 'react-router-dom'
 
 # Prom GTP
 siempre opto por las maneras mas profesionales y esteticas de conseguirlo, recuerda que siempre busco maneras de hacer mejor las cosas, necesito la forma mas optima en cuanto a rendimiento y escalabilidad, eficiente en cuanto a codigo y profesional en cuanto a empleo de codigo limpio, mejores practicas y patrones de diseño, por favor, dame lo mas profesional que tengas; que cuando el CEO vea mi codigo, se impresione por el modelo de desestructurar datos tan bonita, !VAMOS!"""
+
+//promp GITHUB
+https://github.com/ObservedObserver/ChatGPT-Jailbreak-Prompts
   
 
 # Commentary
